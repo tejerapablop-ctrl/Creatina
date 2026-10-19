@@ -235,7 +235,7 @@ button{font-family:inherit;color:inherit}
   const PUSH_URL='';
   const PUSH_TOKEN='59Z2kwIQt0K7ptkq',VAPID='BFSXZXX11LHlYVUgelS-JNUUVM8AXtTwqEOcMR3Ir3plprrx7s0_Ke3nWn_Yt0-noeuy8vzg2RXCA0L3Y4Reb-4';
   const call=(p,b)=>fetch(PUSH_URL+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({token:PUSH_TOKEN},b))});
-  function syncToday(){if(!PUSH_URL)return;const k=keyOf(today());call('/toma',{day:data[k]?k:null}).catch(()=>{});}
+  function syncToday(){if(!PUSH_URL)return;const ks=Object.keys(data).sort(),k=ks[ks.length-1]||null,r=k?data[k]:null;call('/toma',{day:k,streak:streak(),b:r?r.b:null,t:r?r.t:null}).catch(()=>{});}
   const keyBytes=s=>{const b=atob(s.replace(/-/g,'+').replace(/_/g,'/')+'='.repeat((4-s.length%4)%4));return Uint8Array.from(b,c=>c.charCodeAt(0));};
   async function pushUI(){const btn=$('push');if(!PUSH_URL){btn.hidden=true;return;}
     const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
