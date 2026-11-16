@@ -125,6 +125,7 @@ button{font-family:inherit;color:inherit}
   <div class="stats"><div><b id="stStreak">0</b><span>seguidos</span></div><div><b id="stMonth">0</b><span>este mes</span></div><div><b id="stTotal">0</b><span>en total</span></div></div>
   <button class="nav home" id="toHoy">← Volver a Hoy</button>
   <button class="push" id="push" hidden>Activar aviso de las 14:00</button>
+  <button class="push" id="export">Exportar mis datos</button>
   <div class="note" id="note"></div>
 </section>
 
@@ -232,6 +233,10 @@ button{font-family:inherit;color:inherit}
   st.brand=lastBrand();renderAll();
   (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(renderAll);
   /* ---------- aviso de las 14:00: el servidor solo avisa si hoy no está apuntada ---------- */
+  $('export').addEventListener('click',async()=>{const b=$('export'),txt=JSON.stringify(data);
+    try{if(navigator.share){await navigator.share({title:'Creatina',text:txt});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+    try{await navigator.clipboard.writeText(txt);b.textContent='Copiado. Pégalo en el chat';}catch(e){b.textContent='No se pudo copiar';}
+    setTimeout(()=>{b.textContent='Exportar mis datos'},3000);});
   const PUSH_URL='';
   const PUSH_TOKEN='59Z2kwIQt0K7ptkq',VAPID='BFSXZXX11LHlYVUgelS-JNUUVM8AXtTwqEOcMR3Ir3plprrx7s0_Ke3nWn_Yt0-noeuy8vzg2RXCA0L3Y4Reb-4';
   const call=(p,b)=>fetch(PUSH_URL+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({token:PUSH_TOKEN},b))});
